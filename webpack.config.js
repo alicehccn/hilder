@@ -1,0 +1,73 @@
+const path = require('path');
+const webpack = require('webpack');
+const createBabelConfig = require('./babelrc');
+const nodeExternals = require('webpack-node-externals');
+
+const PRODUCTION = process.env.NODE_ENV === 'production';
+const MinifierPlugin = webpack.optimize.UglifyJsPlugin;
+
+const clientConfig = {
+  entry: path.resolve('./src/index.js'),
+  output: {
+    path: path.resolve('./dist'),
+    filename: 'bundle.js',
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        include: path.resolve('./src'),
+        loader: 'babel-loader',
+        query: createBabelConfig(),
+      }
+    ],
+  },
+  plugins: [
+    PRODUCTION && new MinifierPlugin(),
+  ].filter(e => e),
+  devtool: PRODUCTION ? 'source-map' : 'cheap-module-eval-source-map',
+};
+
+const serverConfig = {
+  target: 'node',
+  externals: [ nodeExternals({
+    whitelist: PRODUCTION ? [ 'react', 'react-dom/server' ] : []
+  }) ],
+  node: {
+    __dirname: true
+  },
+  entry: path.resolve('./src/server.js'),
+  output: {
+    path: path.resolve('./dist'),
+    filename: 'server.js',
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        include: path.resolve('./src'),
+        loader: 'babel-loader',
+        query: createBabelConfig({ server: true }), 
+      }
+    ],
+  },
+  plugins: [
+    PRODUCTION && new MinifierPlugin(),
+    new webpack.DefinePlugin({
+      'process.env':{
+        'NODE_ENV': JSON.stringify('production')
+      }
+    }),
+    new webpack.BannerPlugin({
+      banner: 'require("source-map-support").install();',
+      raw: true,
+      entryOnly: false,
+    }),
+  ].filter(e => e),
+  devtool: 'source-map',
+};
+
+module.exports = [
+  clientConfig,
+  serverConfig
+];
