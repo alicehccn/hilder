@@ -4,7 +4,7 @@ import React from 'react';
 import ReactServer from 'react-dom/server';
 import fs from 'fs';
 
-import HelloWorld from './HelloWorld';
+import Index from './index';
 
 
 const app = express();
@@ -13,7 +13,7 @@ app.use('/static', express.static(path.resolve(__dirname, '../dist')));
 
 app.get('*', (req, res) => {
   const html = fs.readFileSync(path.resolve(__dirname, './index.html')).toString();
-  const markup = ReactServer.renderToString(<HelloWorld />);
+  const markup = ReactServer.renderToString(<Index />);
   res.send(html.replace('$react', markup));
 });
 
