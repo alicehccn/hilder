@@ -2,6 +2,7 @@
   "name": "hilder",
   "version": "1.0.0",
   "description": "React on Express",
+  "repository": "git@github.com:alicehccn/hilder.git",
   "main": "index.js",
   "scripts": {
     "build": "webpack",
