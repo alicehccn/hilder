@@ -1,71 +1,77 @@
 const path = require('path');
-const webpack = require('webpack');
 const createBabelConfig = require('./babelrc');
 const nodeExternals = require('webpack-node-externals');
 
-const PRODUCTION = process.env.NODE_ENV === 'production';
+const webpack = require('webpack');
 const MinifierPlugin = webpack.optimize.UglifyJsPlugin;
 
-const clientConfig = {
+const PRODUCTION = process.env.NODE_ENV === 'production';
+
+const filterFalsy = (arr) => arr.filter(e => e);
+
+const createPlugins = ({ server } = {}) => filterFalsy([
+  PRODUCTION && new MinifierPlugin(),
+
+  new webpack.DefinePlugin({
+    'process.env':{
+      'NODE_ENV': JSON.stringify('production')
+    }
+  }),
+
+  server && new webpack.BannerPlugin({
+    banner: 'require("source-map-support").install();',
+    raw: true,
+    entryOnly: false,
+  }),
+]);
+
+const createModule = ({ server } = {}) => ({
+  rules: [
+    {
+      test: /\.js$/,
+      include: path.resolve('./src'),
+      loader: 'babel-loader',
+      query: createBabelConfig(server),
+    }
+  ]
+});
+
+const createExternals = ({ server } = {}) => filterFalsy([
+  server && nodeExternals({
+    whitelist: PRODUCTION ? [ 'react', 'react-dom/server' ] : []
+  })
+]);
+
+const createDevTool = ({ server } = {}) =>
+  PRODUCTION || server ? 'source-map' : 'cheap-module-eval-source-map';
+
+const createBase = (options) => ({
+  module: createModule(options),
+  externals: createExternals(options),
+  plugins: createPlugins(options),
+  devtool: createDevTool(options),
+});
+
+const clientConfig = Object.assign({
+  target: 'web',
   entry: path.resolve('./src/index.js'),
   output: {
     path: path.resolve('./dist'),
     filename: 'bundle.js',
-  },
-  module: {
-    rules: [
-      {
-        test: /\.js$/,
-        include: path.resolve('./src'),
-        loader: 'babel-loader',
-        query: createBabelConfig(),
-      }
-    ],
-  },
-  plugins: [
-    PRODUCTION && new MinifierPlugin(),
-  ].filter(e => e),
-  devtool: PRODUCTION ? 'source-map' : 'cheap-module-eval-source-map',
-};
+  }
+}, createBase({ server: false }));
 
-const serverConfig = {
+const serverConfig = Object.assign({
   target: 'node',
-  externals: [ nodeExternals({
-    whitelist: PRODUCTION ? [ 'react', 'react-dom/server' ] : []
-  }) ],
-  node: {
-    __dirname: true
-  },
   entry: path.resolve('./src/server.js'),
   output: {
     path: path.resolve('./dist'),
     filename: 'server.js',
   },
-  module: {
-    rules: [
-      {
-        test: /\.js$/,
-        include: path.resolve('./src'),
-        loader: 'babel-loader',
-        query: createBabelConfig({ server: true }), 
-      }
-    ],
-  },
-  plugins: [
-    PRODUCTION && new MinifierPlugin(),
-    new webpack.DefinePlugin({
-      'process.env':{
-        'NODE_ENV': JSON.stringify('production')
-      }
-    }),
-    new webpack.BannerPlugin({
-      banner: 'require("source-map-support").install();',
-      raw: true,
-      entryOnly: false,
-    }),
-  ].filter(e => e),
-  devtool: 'source-map',
-};
+  node: {
+    __dirname: true
+  }
+}, createBase({ server: true }));
 
 module.exports = [
   clientConfig,
