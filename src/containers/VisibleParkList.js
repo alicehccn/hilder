@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { SHOW_FEATURED } from '../actions/actions';
+import { toggleFeature } from '../actions/actions';
 import ParkList from '../components/ParkList';
 
 const getVisibleParks = (parks, filter) => {
@@ -11,7 +11,7 @@ const getVisibleParks = (parks, filter) => {
   }
 };
 
-const mapStateToProps = state => {  
+const mapStateToProps = state => {
   return {
     parks: getVisibleParks(state.parks)
   }
