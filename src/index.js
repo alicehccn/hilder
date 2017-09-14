@@ -9,7 +9,11 @@ import { showFeatured } from './actions/actions';
 import featurePark from './reducers/reducers';
 import App from './components/App';
 
-let store = createStore(featurePark, window.STATE_FROM_SERVER);
+const preloadedState = window.__PRELOADED_STATE__
+
+delete window.__PRELOADED_STATE__
+
+let store = createStore(featurePark, preloadedState);
 console.log(store.getState())
 store.dispatch(showFeatured('sky'))
 console.log(store.getState())
