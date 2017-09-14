@@ -2,11 +2,11 @@ import React from 'react';
 import VisibleParkList from '../containers/VisibleParkList';
 import HelloWorld from './HelloWorld';
 
-const App = () => {
+const App = () => (
   <div>
-    <VisibleParkList />
     <HelloWorld />
+    <VisibleParkList />
   </div>
-};
+);
 
 export default App;
