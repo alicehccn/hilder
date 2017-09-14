@@ -28,7 +28,10 @@
     "webpack-node-externals": "^1.6.0"
   },
   "dependencies": {
+    "body-parser": "^1.18.1",
+    "es6-promise": "^4.1.1",
     "express": "^4.15.4",
+    "mongoose": "^4.11.11",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",

@@ -4,9 +4,9 @@ import Park from './Park';
 
 const ParkList = ({ parks }) => (
   <ul>
-    {parks.map(park => 
+    {parks.map((park, i) => 
       <Park
-        key={park.id}
+        key={i}
         {...park} />
     )}
   </ul>

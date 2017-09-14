@@ -1,10 +1,8 @@
 import { combineReducers } from 'redux';
 import { SHOW_FEATURED } from '../actions/actions';
 
-const initialState = [
-    {name: 'Green Lake Park', 'features': ['water', 'football', 'bathroom']},
-    {name: 'Discovery Park', 'features': ['grass', 'tree', 'sky']},
-]
+const initialState = window.__PRELOADED_STATE__
+// delete window.__PRELOADED_STATE__
 
 function parks(state = initialState, action) {
   switch (action.type) {
