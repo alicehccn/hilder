@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { SHOW_FEATURED } from '../actions/actions';
+import { SHOW_FEATURED, GET_CURRENT_LOCATION } from '../actions/actions';
 
 function parks(state = [], action) {
   switch (action.type) {
@@ -29,9 +29,19 @@ function shownFeatures(state = [], action) {
   }
 };
 
+function currentLocation(state = {}, action) {
+  switch (action.type) {
+    case GET_CURRENT_LOCATION:
+      return Object.assign({}, state, action.location);
+    default:
+      return state;
+  }
+};
+
 const featurePark = combineReducers({
   parks,
-  shownFeatures
+  shownFeatures,
+  currentLocation
 })
 
 export default featurePark
