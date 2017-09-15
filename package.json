@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "React on Express",
   "repository": "git@github.com:alicehccn/hilder.git",
-  "main": "index.js",
+  "main": "client.js",
   "scripts": {
     "build": "webpack",
     "build:prod": "cross-env NODE_ENV=production webpack",

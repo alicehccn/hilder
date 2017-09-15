@@ -54,7 +54,7 @@ const createBase = (options) => ({
 
 const clientConfig = Object.assign({
   target: 'web',
-  entry: path.resolve('./src/index.js'),
+  entry: path.resolve('./src/client.js'),
   output: {
     path: path.resolve('./dist'),
     filename: 'bundle.js',

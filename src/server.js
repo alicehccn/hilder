@@ -5,8 +5,8 @@ import { createStore } from 'redux';
 import { renderToString } from 'react-dom/server'
 import { Provider } from 'react-redux'
 
-import db from '../db';
-import Park from '../models/Park';
+import db from '../database/db';
+import Park from '../database/Park';
 
 import App from './components/App';
 import featurePark from './reducers/reducers';
