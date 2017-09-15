@@ -25,12 +25,23 @@ function handleRender(req, res) {
     </Provider>
   );
 
-  Park.find({})
+  Park.find({}, {name: 1, features: 1, hours: 1, _id: 0})
     .sort({name: 'asc'})
     .exec((err, parks) => {
       if (err)
         throw err;
-      res.send(renderFullPage(html, parks))
+      const initialState = {
+        parks: parks,
+        shownFeatures: []
+      };
+      const store = createStore(featurePark, initialState);
+
+      const html = renderToString(
+        <Provider store={store}>
+          <App />
+        </Provider>
+      );
+      res.send(renderFullPage(html, store.getState()));
   });
 };
 
