@@ -7,10 +7,9 @@ import featurePark from './reducers/reducers';
 import App from './components/App';
 
 const initialState = window.__PRELOADED_STATE__
-// delete window.__PRELOADED_STATE__
+delete window.__PRELOADED_STATE__
 
 const store = createStore(featurePark, initialState);
-console.log(initialState)
 
 if (typeof document !== 'undefined') {
   render(
