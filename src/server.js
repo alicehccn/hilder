@@ -25,7 +25,7 @@ function handleRender(req, res) {
     </Provider>
   );
 
-  Park.find({}, {name: 1, features: 1, hours: 1, _id: 0})
+  Park.find({}, {name: 1, features: 1, hours: 1, location: 1, _id: 0})
     .sort({name: 'asc'})
     .exec((err, parks) => {
       if (err)
