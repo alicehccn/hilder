@@ -11,7 +11,8 @@ const getVisibleParks = (parks, filters) => {
 
 const mapStateToProps = state => {
   return {
-    parks: getVisibleParks(state.parks, state.shownFeatures)
+    parks: getVisibleParks(state.parks, state.shownFeatures),
+    features: state.features,
   }
 };
 
