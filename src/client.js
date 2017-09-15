@@ -11,6 +11,18 @@ delete window.__PRELOADED_STATE__
 
 const store = createStore(featurePark, initialState);
 
+if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition(position => {
+    const location = {
+      type: 'Point',
+      coordinates: [position.coords.latitude, position.coords.longitude]
+    }
+    console.log(location);
+  }, error => {
+      console.log("Error: ", error)
+  },{ enableHighAccuracy: true });
+}
+
 if (typeof document !== 'undefined') {
   render(
     <Provider store={store}>
