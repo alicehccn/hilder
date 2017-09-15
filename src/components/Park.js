@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Park = ({ name, features, hours, location }) => (
+const Park = ({ name, features, hours }) => (
   <li>
     <h4>{name}</h4>
     {features.map((feature, i) => <div key={i}>{feature}</div>)}
     <div>{hours}</div>
-    <div>{location}</div>
   </li>
 );
 

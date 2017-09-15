@@ -2,17 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Park from './Park';
 
-const ParkList = ({ parks }) => {
-  console.log(parks)
-  return (
-    <ul>
-      {parks.map((park, i) => 
+const ParkList = ({ parks }) => (
+  <ul>
+    {parks && parks.map((park, i) => {
+      return (
         <Park
           key={i}
-          {...park} />
+          name={park.name}
+          features={park.features}
+          hours={park.hours} />
       )}
-    </ul>
-)};
+    )}
+  </ul>
+);
 
 ParkList.PropTypes = {
   parks: PropTypes.arrayOf(PropTypes.shape({
