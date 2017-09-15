@@ -17,14 +17,6 @@ app.use('/static', express.static(path.resolve(__dirname, '../dist')));
 app.use(handleRender);
 
 function handleRender(req, res) {
-  const store = createStore(featurePark);
-
-  const html = renderToString(
-    <Provider store={store}>
-      <App />
-    </Provider>
-  );
-
   Park.find({}, {name: 1, features: 1, hours: 1, location: 1, _id: 0})
     .sort({name: 'asc'})
     .exec((err, parks) => {
@@ -35,7 +27,6 @@ function handleRender(req, res) {
         shownFeatures: []
       };
       const store = createStore(featurePark, initialState);
-
       const html = renderToString(
         <Provider store={store}>
           <App />
